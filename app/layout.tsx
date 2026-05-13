@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 // 1. Apna ReduxProvider import karein
 import ReduxProvider from "./provider/readuxProvider"; // Path check karlein
+import AuthGuard from "@/components/AuthGard";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +31,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {/* 2. Poori App ko ReduxProvider mein wrap karein */}
-        <ReduxProvider>
-          {children}
+
+        <ReduxProvider>     
+          <AuthGuard>      
+            {children}       
+          </AuthGuard>
         </ReduxProvider>
       </body>
     </html>

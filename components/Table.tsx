@@ -1,17 +1,37 @@
 "use client";
 
-import React from 'react';
-import { MoreVertical, Wallet, CreditCard, Landmark, RotateCcw, Send } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { getProducts } from '@/app/Api/ProductApi';
+import { MoreVertical, Wallet, CreditCard, Landmark, RotateCcw, Send, Star } from 'lucide-react';
+// 1. TypeScript Interface taake "Type" ka error na aaye
+interface Product {
+  id: number;
+  title: string;
+  category: string;
+  price: number;
+  rating: number;
+  brand?: string;
+  thumbnail: string;
+  tags: string[];
+}
 
 export default function ProductSection() {
-
-  const products = [
-    { id: 1, name: "MaterialM - Admin", desc: "Dashboard Template", cat: "Mobile", catColor: "bg-cyan-500", sales: "2,350", earn: "$24,235", tech: ["PS"] },
-    { id: 2, name: "MatDash - Admin", desc: "Dashboard Template", cat: "Web App", catColor: "bg-emerald-400", sales: "1,630", earn: "$13,699", tech: ["F", "V"] },
-    { id: 3, name: "Spike - Admin", desc: "Dashboard Template", cat: "Website", catColor: "bg-violet-500", sales: "480", earn: "$13,699", tech: ["Xd", "B"] },
-    { id: 4, name: "Modernize - Admin", desc: "Dashboard Template", cat: "Marketing", catColor: "bg-teal-400", sales: "874", earn: "$10,250", tech: ["A"] },
-    { id: 5, name: "MaterialPro - Admin", desc: "Dashboard Template", cat: "SSM", catColor: "bg-amber-500", sales: "3715", earn: "$36,400", tech: ["N", "JS"] },
-  ];
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  // 2. API Fetching with Error Handling
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const transactions = [
     { title: "PayPal Transfer", sub: "Money added", amount: "+$6,235", color: "bg-blue-50", iconColor: "text-blue-600", icon: <Send size={18} /> },
@@ -21,61 +41,102 @@ export default function ProductSection() {
     { title: "Refund", sub: "Bill Payment", amount: "-$32", color: "bg-rose-50", iconColor: "text-rose-500", icon: <RotateCcw size={18} /> },
   ];
 
-  return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-400 mx-auto px-10 mt-6 mb-10">
+  // 3. Loading State UI
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
-      {/* LEFT: Top Performing Products Table (Spans 2 columns) */}
-      <div className="lg:col-span-2 bg-white p-8 rounded-[2.5rem] shadow-sm overflow-x-auto">
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-400 mx-auto px-10 mt-6">
+
+      {/* LEFT: Products Table */}
+      <div className="lg:col-span-2 bg-white p-4 sm:p-8 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-sm">
+        {/* Header Section */}
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-xl font-bold text-slate-800">Top Performing Products</h3>
-          <MoreVertical size={20} className="text-slate-400" />
+          <h3 className="text-lg sm:text-xl font-bold text-slate-800">Inventory Products</h3>
+          <MoreVertical size={20} className="text-slate-400 cursor-pointer" />
         </div>
 
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="text-slate-500 text-sm border-b border-slate-50">
-              <th className="pb-4 font-semibold">Product Name</th>
-              <th className="pb-4 font-semibold">Category</th>
-              <th className="pb-4 font-semibold">Sales</th>
-              <th className="pb-4 font-semibold">Earnings</th>
-              <th className="pb-4 font-semibold text-right">Technology</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-50">
-            {products.map((item) => (
-              <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
-                <td className="py-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center font-bold text-blue-500 text-xs">M</div>
-                    <div>
-                      <p className="font-bold text-slate-800 text-sm">{item.name}</p>
-                      <p className="text-xs text-slate-400">{item.desc}</p>
-                    </div>
-                  </div>
-                </td>
-                <td className="py-4">
-                  <span className={`${item.catColor} text-white px-3 py-1 rounded-full text-[10px] font-bold`}>{item.cat}</span>
-                </td>
-                <td className="py-4 text-slate-500 text-sm">{item.sales}</td>
-                <td className="py-4 font-bold text-slate-800 text-sm">{item.earn}</td>
-                <td className="py-4">
-                  <div className="flex justify-end gap-1">
-                    {item.tech.map((t, i) => (
-                      <span key={i} className="w-6 h-6 bg-slate-800 text-white rounded text-[8px] flex items-center justify-center font-bold uppercase">{t}</span>
-                    ))}
-                  </div>
-                </td>
+        {/* Wrapper for Responsiveness */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse min-w-[600px] sm:min-w-full">
+            <thead>
+              <tr className="text-slate-500 text-xs sm:text-sm border-b border-slate-50">
+                <th className="pb-4 font-semibold">Title</th>
+                <th className="pb-4 font-semibold hidden md:table-cell">Category</th>
+                <th className="pb-4 font-semibold">Price</th>
+                <th className="pb-4 font-semibold hidden sm:table-cell">Rating</th>
+                <th className="pb-4 font-semibold text-right">Brand</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {products.map((item) => (
+                <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
+                  {/* Title & Image Column */}
+                  <td className="py-4">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={item.thumbnail}
+                        alt={item.title}
+                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-slate-100 object-cover border border-slate-100 flex-shrink-0"
+                      />
+                      <div className="min-w-0">
+                        <p className="font-bold text-slate-800 text-xs sm:text-sm truncate max-w-[120px] sm:max-w-full">
+                          {item.title}
+                        </p>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {/* Sirf 1-2 tags dikhao mobile par taake jagah bachay */}
+                          {item.tags?.slice(0, 2).map((tag, idx) => (
+                            <span key={idx} className="text-[8px] sm:text-[9px] text-blue-500 bg-blue-50 px-1.5 py-0.5 rounded-md italic font-medium">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
 
-      {/* RIGHT: Recent Transactions (Spans 1 column) */}
+                  {/* Category - Hidden on small mobile, shown on Medium+ */}
+                  <td className="py-4 hidden md:table-cell">
+                    <span className="bg-blue-600 text-white px-2.5 py-0.5 rounded-full text-[10px] font-bold capitalize">
+                      {item.category}
+                    </span>
+                  </td>
+
+                  {/* Price */}
+                  <td className="py-4 text-slate-500 text-xs sm:text-sm font-bold">
+                    ${item.price}
+                  </td>
+
+                  {/* Rating - Hidden on very small screens */}
+                  <td className="py-4 hidden sm:table-cell">
+                    <div className="flex items-center gap-1 text-amber-500 font-bold text-xs sm:text-sm">
+                      <Star size={14} fill="currentColor" />
+                      {item.rating}
+                    </div>
+                  </td>
+
+                  {/* Brand */}
+                  <td className="py-4 text-right">
+                    <span className="text-[10px] sm:text-xs font-bold text-slate-600 bg-slate-100 px-2 py-1 rounded-lg inline-block max-w-[80px] sm:max-w-none truncate">
+                      {item.brand || "Generic"}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {/* RIGHT: Recent Transactions */}
       <div className="lg:col-span-1 bg-white p-8 rounded-[2.5rem] shadow-sm flex flex-col h-full">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-slate-800">Recent Transactions</h3>
-          <MoreVertical size={20} className="text-slate-400" />
+          <MoreVertical size={20} className="text-slate-400 cursor-pointer" />
         </div>
 
         <div className="space-y-6 grow">
