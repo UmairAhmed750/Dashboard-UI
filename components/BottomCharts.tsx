@@ -7,28 +7,28 @@ import { MoreVertical, MousePointer2, TrendingUp, History, Play } from 'lucide-r
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 export default function BottomCharts() {
-  
+
   // 1. Marketing Report Donut
   const marketingOptions: any = {
     chart: { type: 'donut' },
     colors: ['#0095FF', '#10B981', '#FF5B7D'],
     labels: ['Organic', 'Referral', 'Ads'],
     stroke: { colors: ['var(--chart-stroke, #ffffff)'] }, // Dark mode borders logic
-    plotOptions: { 
-      pie: { 
-        donut: { 
-          size: '75%', 
-          labels: { 
-            show: true, 
-            total: { 
-              show: true, 
-              label: '', 
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '75%',
+          labels: {
+            show: true,
+            total: {
+              show: true,
+              label: '',
               color: 'var(--chart-text, #1e293b)', // Dynamic text color using shadcn primary text
-              formatter: () => '24.3k' 
-            } 
-          } 
-        } 
-      } 
+              formatter: () => '24.3k'
+            }
+          }
+        }
+      }
     },
     dataLabels: { enabled: false },
     legend: { show: false }
@@ -41,9 +41,9 @@ export default function BottomCharts() {
     plotOptions: { bar: { borderRadius: 4, columnWidth: '30%', distributed: false } },
     dataLabels: { enabled: false },
     grid: { show: false },
-    xaxis: { 
-      categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'], 
-      axisBorder: { show: false }, 
+    xaxis: {
+      categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+      axisBorder: { show: false },
       axisTicks: { show: false },
       labels: { style: { colors: '#94A3B8' } }
     },
@@ -61,26 +61,26 @@ export default function BottomCharts() {
   return (
     // Main grid box par dynamic CSS variables pass kiye hain taake Apex charts internally inherit kar sakein
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-400 mx-auto px-4 md:px-10 mt-6 [--chart-text:#1e293b] [--chart-stroke:#ffffff] dark:[--chart-text:#f8fafc] dark:[--chart-stroke:#1e1e24]">
-      
+
       {/* CARD 1: Marketing Report */}
       <div className="bg-white dark:bg-card dark:border dark:border-border p-6 rounded-[2.5rem] shadow-sm flex flex-col h-100">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-slate-800 dark:text-foreground">Marketing Report</h3>
           <MoreVertical size={20} className="text-slate-400 dark:text-muted-foreground" />
         </div>
-        
+
         <div className="flex items-center justify-between grow">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-rose-50 dark:bg-rose-500/10 text-rose-500 rounded-xl"><TrendingUp size={18}/></div>
+              <div className="p-2 bg-rose-50 dark:bg-rose-500/10 text-rose-500 rounded-xl"><TrendingUp size={18} /></div>
               <div><p className="text-xs text-slate-400 dark:text-muted-foreground">Google Ads</p><p className="font-bold text-slate-800 dark:text-foreground">+2.9k</p></div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 rounded-xl"><MousePointer2 size={18}/></div>
+              <div className="p-2 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 rounded-xl"><MousePointer2 size={18} /></div>
               <div><p className="text-xs text-slate-400 dark:text-muted-foreground">Referral</p><p className="font-bold text-slate-800 dark:text-foreground">1.22</p></div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-50 dark:bg-blue-500/10 text-blue-500 rounded-xl"><History size={18}/></div>
+              <div className="p-2 bg-blue-50 dark:bg-blue-500/10 text-blue-500 rounded-xl"><History size={18} /></div>
               <div><p className="text-xs text-slate-400 dark:text-muted-foreground">Organic</p><p className="font-bold text-slate-800 dark:text-foreground">24.3K</p></div>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default function BottomCharts() {
         <p className="text-xs text-slate-400 dark:text-muted-foreground mb-4">Last 7 days</p>
 
         <div className="grow">
-          <Chart options={paymentsOptions} series={[{name: 'Pay', data: [40, 60, 35, 90, 50, 70, 55]}]} type="bar" height="100%" />
+          <Chart options={paymentsOptions} series={[{ name: 'Pay', data: [40, 60, 35, 90, 50, 70, 55] }]} type="bar" height="100%" />
         </div>
 
         <div className="mt-4 pt-4 border-t border-slate-100 dark:border-border flex justify-between text-xs font-medium dark:text-foreground">
@@ -133,7 +133,7 @@ export default function BottomCharts() {
             <span className="text-xl font-bold text-slate-800 dark:text-blue-100">18.4%</span>
           </div>
           <div className="absolute bottom-0 left-0 right-0">
-            <Chart options={annualOptions} series={[{data: [30, 70, 40, 90, 50, 80, 40]}]} type="area" height={100} />
+            <Chart options={annualOptions} series={[{ data: [30, 70, 40, 90, 50, 80, 40] }]} type="area" height={100} />
           </div>
         </div>
 

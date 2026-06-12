@@ -16,8 +16,8 @@ export default function Charts() {
     stroke: { curve: 'smooth', width: 2 },
     // Dark mode mein grid line color change karne ke liye CSS variables ka use kiya hai
     grid: { padding: { top: -20, bottom: 0 }, strokeDashArray: 5, borderColor: 'var(--chart-grid, #f1f5f9)' },
-    xaxis: { 
-      categories: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'], 
+    xaxis: {
+      categories: ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'],
       labels: { style: { colors: '#94A3B8' } },
       axisBorder: { show: false },
       axisTicks: { show: false }
@@ -34,7 +34,7 @@ export default function Charts() {
   // 2. Expense Chart Options (Bar Chart)
   const expenseOptions: any = {
     chart: { type: 'bar', toolbar: { show: false } },
-    colors: ['#0095FF', '#8B5CF6'], 
+    colors: ['#0095FF', '#8B5CF6'],
     plotOptions: {
       bar: {
         borderRadius: 5,
@@ -63,18 +63,18 @@ export default function Charts() {
     plotOptions: {
       pie: {
         startAngle: -90, endAngle: 90,
-        donut: { 
-          size: '80%', 
-          labels: { 
-            show: true, 
-            total: { 
-              show: true, 
-              label: '', 
+        donut: {
+          size: '80%',
+          labels: {
+            show: true,
+            total: {
+              show: true,
+              label: '',
               // Center text ka color dynamic karne ke liye CSS variable use kiya hai
               color: 'var(--chart-text, #1e293b)',
-              formatter: () => "8364" 
-            } 
-          } 
+              formatter: () => "8364"
+            }
+          }
         }
       }
     },
@@ -87,7 +87,7 @@ export default function Charts() {
   function LegendItem({ color, label, percentage }: { color: string, label: string, percentage: string }) {
     return (
       <div className="text-xs font-medium text-slate-500 dark:text-muted-foreground flex items-center gap-2">
-        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} /> 
+        <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: color }} />
         <span className="font-bold text-slate-800 dark:text-foreground">{percentage}</span> {label}
       </div>
     );
@@ -101,26 +101,24 @@ export default function Charts() {
       <div className="lg:col-span-2 bg-white dark:bg-card dark:border dark:border-border p-6 md:p-8 rounded-[2.5rem] shadow-sm flex flex-col h-auto lg:h-120">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4">
           <h3 className="text-xl font-bold text-slate-800 dark:text-foreground">Sales Profit</h3>
-          
+
           {/* Tab Buttons Wrapper */}
           <div className="flex gap-1 bg-slate-50 dark:bg-secondary p-1 rounded-xl w-full sm:w-auto">
-            <button 
+            <button
               onClick={() => setActiveTab('profit')}
-              className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-xs font-bold transition-all hover:cursor-pointer ${
-                activeTab === 'profit' 
-                  ? 'bg-white dark:bg-card shadow-md text-blue-600 dark:text-blue-400' 
+              className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-xs font-bold transition-all hover:cursor-pointer ${activeTab === 'profit'
+                  ? 'bg-white dark:bg-card shadow-md text-blue-600 dark:text-blue-400'
                   : 'text-slate-400 dark:text-muted-foreground'
-              }`}
+                }`}
             >
               Profit
             </button>
-            <button 
+            <button
               onClick={() => setActiveTab('expenses')}
-              className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-xs font-bold transition-all hover:cursor-pointer ${
-                activeTab === 'expenses' 
-                  ? 'bg-white dark:bg-card shadow-md text-blue-600 dark:text-blue-400' 
+              className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-xs font-bold transition-all hover:cursor-pointer ${activeTab === 'expenses'
+                  ? 'bg-white dark:bg-card shadow-md text-blue-600 dark:text-blue-400'
                   : 'text-slate-400 dark:text-muted-foreground'
-              }`}
+                }`}
             >
               Expenses
             </button>
@@ -130,34 +128,34 @@ export default function Charts() {
         {/* Chart Display Area */}
         <div className="grow -mt-2 min-h-75">
           {activeTab === 'profit' ? (
-            <Chart 
+            <Chart
               key="profit"
-              options={profitOptions} 
+              options={profitOptions}
               series={[
-                { name: 'Profit', data: [25, 40, 20, 30, 45, 50, 75, 60, 40] }, 
+                { name: 'Profit', data: [25, 40, 20, 30, 45, 50, 75, 60, 40] },
                 { name: 'Exp', data: [50, 30, 40, 25, 30, 35, 40, 45, 60] }
-              ]} 
-              type="area" 
-              height="100%" 
+              ]}
+              type="area"
+              height="100%"
             />
           ) : (
-            <Chart 
+            <Chart
               key="expenses"
-              options={expenseOptions} 
+              options={expenseOptions}
               series={[
-                { name: 'Marketing', data: [70, 40, 25, 55, 40, 90, 30] }, 
+                { name: 'Marketing', data: [70, 40, 25, 55, 40, 90, 30] },
                 { name: 'Development', data: [45, 25, 80, 38, 30, 45, 45] }
-              ]} 
-              type="bar" 
-              height="100%" 
+              ]}
+              type="bar"
+              height="100%"
             />
-          ) }
+          )}
         </div>
 
         {/* Footer Stats */}
         <div className="flex flex-col xl:flex-row items-center justify-between mt-4 pt-6 border-t border-slate-50 dark:border-border gap-6">
           <div className="flex flex-col sm:flex-row gap-6 md:gap-10 w-full sm:w-auto">
-            
+
             {/* Stat 1 */}
             <div className="flex items-center gap-3">
               <div className="bg-[#D1FAE5] dark:bg-emerald-500/10 text-[#10B981] p-3 rounded-2xl shrink-0">
@@ -195,7 +193,7 @@ export default function Charts() {
           <h3 className="text-xl font-bold text-slate-800 dark:text-foreground">Product Sales</h3>
           <MoreVertical size={24} className="text-slate-400 dark:text-muted-foreground cursor-pointer" />
         </div>
-        
+
         {/* Donut Chart Wrapper */}
         <div className="relative grow flex flex-col items-center justify-center -mt-10">
           <Chart options={productOptions} series={[36, 17, 22, 31]} type="donut" width="100%" />

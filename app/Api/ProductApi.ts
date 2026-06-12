@@ -54,7 +54,7 @@ export const useGetPostsList = () => {
       const res = await axios.get('https://dummyjson.com/posts?limit=10'); // 👈 Jitna data chahiye yahan likhein
       return res.data.posts as Post[];
     },
-   staleTime: 0,
+    staleTime: 0,
   });
 };
 

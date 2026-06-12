@@ -18,7 +18,7 @@ export default function PutForm() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [editTitle, setEditTitle] = useState('');
-  
+
   // 🔄 Local state taake refresh par hydration ka ya delay ka masla na aaye
   const [currentRole, setCurrentRole] = useState<string>("");
 
