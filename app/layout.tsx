@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// 1. Apna ReduxProvider import karein
-import ReduxProvider from "./provider/readuxProvider"; // Path check karlein
-import AuthGuard from "@/components/AuthGard";
+import ReduxProvider from "./provider/readuxProvider";
+import { ThemeProvider } from "@/components/themeProvider"; // 🔥 Sahi path check kar lein
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: " Dashboard",
+  title: "Dashboard",
   description: "Modern Supply Chain Management",
 };
 
@@ -26,16 +25,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
+    <html 
+      lang="en" 
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning 
     >
-      <body className="min-h-full flex flex-col">
-
-        <ReduxProvider>     
-          <AuthGuard>      
-            {children}       
-          </AuthGuard>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <ReduxProvider>   
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            disableTransitionOnChange
+          > 
+            {children}
+          </ThemeProvider>
         </ReduxProvider>
       </body>
     </html>
